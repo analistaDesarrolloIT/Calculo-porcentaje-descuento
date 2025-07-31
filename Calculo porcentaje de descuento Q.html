@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Descuento en GTQ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0066ff;
+            text-align: center;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #0066ff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0055cc;
+        }
+        #resultado {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            padding: 10px;
+            background: #e9f5ff;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .negative {
+            color: #ff4444;
+        }
+        .positive {
+            color: #00aa44;
+        }
+        .currency {
+            font-weight: bold;
+            color: #5c3317; /* Color café similar al quetzal */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Descuento <span class="currency">(GTQ)</span></h1>
+        <label for="precioActual">Precio Actual (GTQ):</label>
+        <input type="number" id="precioActual" placeholder="Ej: 1000.75" step="0.01">
+
+        <label for="precioDeseado">Precio Deseado (GTQ):</label>
+        <input type="number" id="precioDeseado" placeholder="Ej: 800.50" step="0.01">
+
+        <button onclick="calcularDescuento()">Calcular Porcentaje de Descuento</button>
+
+        <div id="resultado">El porcentaje de descuento necesario es: <span id="porcentaje">0</span>%</div>
+        <div id="diferencia" style="margin-top: 10px;"></div>
+    </div>
+
+    <script>
+        function calcularDescuento() {
+            // Obtener valores con todos los decimales
+            const precioActual = parseFloat(document.getElementById("precioActual").value);
+            const precioDeseado = parseFloat(document.getElementById("precioDeseado").value);
+
+            // Validación
+            if (isNaN(precioActual) || isNaN(precioDeseado)) {
+                alert("Ingresa montos válidos en quetzales");
+                return;
+            }
+
+            // Cálculo exacto (sin redondeo)
+            const descuento = ((precioActual - precioDeseado) * 100) / precioActual;
+            const diferencia = precioActual - precioDeseado;
+
+            // Mostrar resultados
+            document.getElementById("porcentaje").textContent = descuento.toString().includes('.') ? 
+                descuento.toString().replace(/\.?0+$/, '') : descuento; // Elimina .00 si es entero
+            
+            document.getElementById("porcentaje").className = descuento >= 0 ? 'positive' : 'negative';
+            
+            document.getElementById("diferencia").innerHTML = 
+                `Diferencia exacta: <span class="${diferencia >= 0 ? 'positive' : 'negative'}">${diferencia} GTQ</span>`;
+        }
+    </script>
+</body>
+</html>
